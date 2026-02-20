@@ -1,0 +1,13 @@
+streamlit
+langchain-openai
+langchain-community
+langchain-classic
+langchain-experimental
+ddgs
+wikipedia
+arxiv
+numpy
+scipy
+sympy
+pandas
+matplotlib
