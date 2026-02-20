@@ -12,14 +12,13 @@ st.set_page_config(page_title="Grok-Scientist", page_icon="🧬", layout="wide")
 st.title("🧬 Grok-Scientist – Autonomous AI Scientist (OpenAI Powered)")
 
 st.markdown("""
-**Now running on OpenAI** — autonomously researches papers, runs simulations, follows the scientific method, and drives real discoveries.
+**Now running on OpenAI** — autonomously researches papers, runs simulations, follows the scientific method, and works toward genuine discoveries to advance humanity.
 """)
 
 # ====================== SMART API KEY LOADING ======================
-# Priority: 1. secrets.toml  2. environment variable  3. sidebar
 if "OPENAI_API_KEY" in st.secrets:
     os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-    st.sidebar.success("✅ API key auto-loaded from ~/.streamlit/secrets.toml")
+    st.sidebar.success("✅ API key auto-loaded from secrets")
     api_key = st.secrets["OPENAI_API_KEY"]
 elif os.getenv("OPENAI_API_KEY"):
     st.sidebar.success("✅ API key loaded from environment variable")
@@ -36,10 +35,10 @@ else:
         st.sidebar.success("✅ API key set for this session")
 
 if not os.getenv("OPENAI_API_KEY"):
-    st.warning("👈 Please add your key to ~/.streamlit/secrets.toml or enter it above")
+    st.warning("👈 Please add your key to secrets or enter it above")
     st.stop()
 
-# Model selection (remains in sidebar)
+# Model selection
 model_choice = st.sidebar.selectbox(
     "Model",
     ["gpt-4o-mini", "gpt-4o", "o1-mini"],
@@ -49,7 +48,7 @@ model_choice = st.sidebar.selectbox(
          "o1-mini = strongest reasoning"
 )
 
-# ====================== REST OF THE APP (unchanged) ======================
+# ====================== AGENT SETUP ======================
 if "agent" not in st.session_state or st.session_state.get("current_model") != model_choice:
     llm = ChatOpenAI(
         model=model_choice,
@@ -92,7 +91,7 @@ Always:
     )
     st.session_state.current_model = model_choice
 
-# Chat interface (exactly the same as before)
+# ====================== CHAT INTERFACE ======================
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -123,5 +122,23 @@ if prompt := st.chat_input("Enter a scientific challenge or discovery goal..."):
             st.markdown(answer)
             st.session_state.messages.append({"role": "assistant", "content": answer})
 
+# ====================== DONATION SECTION ======================
 st.sidebar.markdown("---")
-st.sidebar.info("💡 Try: \"Autonomously discover a new way to improve perovskite solar cell efficiency...\"")
+
+st.sidebar.header("Support Grok-Scientist")
+st.sidebar.markdown(
+    "If this autonomous AI scientist helped your research or sparked an idea, "
+    "consider a small donation to keep it running and improving!"
+)
+
+st.sidebar.markdown("### Quick ways to support:")
+st.sidebar.markdown("**Cash App** — $hartensteindominic")
+st.sidebar.markdown("**Venmo** — @Dominichartenstein")
+st.sidebar.markdown("**Chime** — @dominic-hartenstein-1")
+
+st.sidebar.markdown(
+    "Even $5 helps cover OpenAI API costs and future upgrades. "
+    "Thank you for believing in open scientific acceleration! 🚀🧬"
+)
+
+st.sidebar.info("💡 Try: \"Autonomously discover a new way to improve perovskite solar cell efficiency using simulations and latest arXiv papers\"")
